@@ -1,0 +1,45 @@
+{
+  "Metadata": {
+    "applicationName": "Next.js Quiz",
+    "keywords": "Quiz, Next.js, JS, Test, Questions",
+    "creator": "Bohdan",
+    "publisher": "",
+    "title": {
+      "default": "Next.js Quiz",
+      "template": "%s | Next.js Quiz"
+    },
+    "description": "Take this Quiz to test your knowledge of NEXT.js"
+  },
+  "Home": {
+    "title": "Nex.js Quiz",
+    "headline": "Next.js Quiz",
+    "caption": "Take this quiz to test your knowledge",
+    "start": "Let’s start",
+    "loading": "Loading...",
+    "fields": {
+      "name": {
+        "label": "Your name",
+        "placeholder": "Bonnie Green"
+      },
+      "group": {
+        "label": "Your group",
+        "placeholder": ""
+      }
+    }
+  },
+  "Question": {
+    "loading": "Loading...",
+    "next": "Next question",
+    "back": "Go Back",
+    "finish": "Finish"
+  },
+  "Result": {
+    "headline": "Well Done!",
+    "caption": "Take a cup of tea ☕",
+    "score": "Your Score",
+    "download": {
+      "caption": "Click here to download your answers:",
+      "button": "Download"
+    }
+  }
+}

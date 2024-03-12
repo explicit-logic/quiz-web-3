@@ -1,0 +1,45 @@
+{
+  "Metadata": {
+    "applicationName": "Next.js Quiz",
+    "keywords": "Опрос, Next.js, JS, Тес, Вопросы",
+    "creator": "Богдан",
+    "publisher": "",
+    "title": {
+      "default": "Next.js Вопросы",
+      "template": "%s | Next.js Вопросы"
+    },
+    "description": "Пройдите тест чтобы проверить свои знания NEXT.js"
+  },
+  "Home": {
+    "title": "Nex.js Опрос",
+    "headline": "Next.js Опрос",
+    "caption": "Пройдите опрос чтобы проверить свои знания",
+    "start": "Начать",
+    "loading": "Загрузка...",
+    "fields": {
+      "name": {
+        "label": "Ваше имя",
+        "placeholder": "Святослав Вакарчук"
+      },
+      "group": {
+        "label": "Ваша группа",
+        "placeholder": ""
+      }
+    }
+  },
+  "Question": {
+    "loading": "Загрузка...",
+    "next": "Далее",
+    "back": "Назад",
+    "finish": "Закончить"
+  },
+  "Result": {
+    "headline": "Готово!",
+    "caption": "Теперь можно выпить чай ☕",
+    "score": "Ваш результат",
+    "download": {
+      "caption": "Нажмите здесь чтобы загрузить ответы:",
+      "button": "Загрузить"
+    }
+  }
+}
