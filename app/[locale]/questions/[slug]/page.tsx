@@ -1,12 +1,9 @@
-// Modules
-import dynamic from 'next/dynamic';
-
 // Lib
 import { getFile, parse } from '@/lib/server/questionItem';
 import { getSlugs } from '@/lib/server/questionSlugs';
 
 // Components
-const QuestionForm = dynamic(() => import('@/components/organisms/QuestionForm'), { ssr: false });
+import QuestionForm from '@/components/organisms/QuestionForm';
 
 export async function generateStaticParams({ params: { locale } }: { params: { locale: string } }) {
   const slugs = await getSlugs(locale);

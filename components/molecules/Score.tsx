@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 
 // Lib
-import { getAllAnswers } from '@/lib/client/answerStorage';
+import { getAllAnswers } from '@/store/answerStorage';
 
 // Constants
 import { TYPES } from '@/constants/question';

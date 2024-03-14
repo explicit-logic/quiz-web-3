@@ -1,6 +1,11 @@
 const key = 'slugs';
 
+const isClient = typeof window !== 'undefined';
+
 export function getSlugs(): string[] {
+  if (!isClient) {
+    return [];
+  }
   const slugs = sessionStorage.getItem(key);
 
   if (!slugs) {
@@ -15,6 +20,9 @@ export function getSlugs(): string[] {
 }
 
 export function getNextSlug(currentSlug: string): string {
+  if (!isClient) {
+    return currentSlug;
+  }
   const slugs = getSlugs();
   const currentIndex = slugs.indexOf(currentSlug);
   const nextIndex = currentIndex + 1;
@@ -24,6 +32,9 @@ export function getNextSlug(currentSlug: string): string {
 }
 
 export function getPreviousSlug(currentSlug: string): string {
+  if (!isClient) {
+    return currentSlug;
+  }
   const slugs = getSlugs();
   const currentIndex = slugs.indexOf(currentSlug);
   const previousIndex = currentIndex - 1;
@@ -33,5 +44,7 @@ export function getPreviousSlug(currentSlug: string): string {
 }
 
 export function setSlugs(slugs: string[]) {
-  sessionStorage.setItem(key, JSON.stringify(slugs));
+  if (isClient) {
+    sessionStorage.setItem(key, JSON.stringify(slugs));
+  }
 }

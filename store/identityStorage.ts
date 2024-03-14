@@ -1,6 +1,12 @@
 const key = 'identity';
 
+const isClient = typeof window !== 'undefined';
+
 export function getIdentity() {
+  if (!isClient) {
+    return {};
+  }
+
   const identity = sessionStorage.getItem(key);
 
   if (!identity) {
@@ -15,5 +21,7 @@ export function getIdentity() {
 }
 
 export function setIdentity(identity: object) {
-  sessionStorage.setItem(key, JSON.stringify(identity));
+  if (isClient) {
+    sessionStorage.setItem(key, JSON.stringify(identity));
+  }
 }

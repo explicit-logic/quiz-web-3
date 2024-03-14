@@ -1,7 +1,5 @@
 'use client';
 
-import { Flowbite } from 'flowbite-react';
-
 import DarkThemeToggle from '@/components/atoms/DarkThemeToggle';
 
 function TopBar() {
@@ -15,9 +13,7 @@ function TopBar() {
         {/* <span>Ariana Tyler</span> */}
       </div>
       <div className="pl-2">
-        <Flowbite theme={{ mode: 'auto' }}>
-          <DarkThemeToggle />
-        </Flowbite>
+        <DarkThemeToggle />
       </div>
     </div>
   );

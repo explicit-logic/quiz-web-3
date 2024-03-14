@@ -3,8 +3,8 @@
 import { useFormik } from 'formik';
 
 // Lib
-import { setAnswersBySlug } from '@/lib/client/answerStorage';
-import { getNextSlug, getPreviousSlug } from '@/lib/client/slugStorage';
+import { setAnswersBySlug } from '@/store/answerStorage';
+import { getNextSlug, getPreviousSlug } from '@/store/slugStorage';
 
 // Components
 import QuestionFormView from './QuestionForm.view';

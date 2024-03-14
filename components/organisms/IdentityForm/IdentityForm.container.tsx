@@ -3,8 +3,8 @@
 import { useEffect } from 'react';
 
 // Lib
-import { setIdentity } from '@/lib/client/identityStorage';
-import { setSlugs } from '@/lib/client/slugStorage';
+import { setIdentity } from '@/store/identityStorage';
+import { setSlugs } from '@/store/slugStorage';
 
 // Config
 import { getQuizConfig } from '@/lib/client/getQuizConfig';

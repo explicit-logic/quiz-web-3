@@ -1,19 +1,15 @@
 // Modules
-import { ThemeModeScript } from 'flowbite-react';
 import { NextIntlClientProvider } from 'next-intl';
 import { getTranslations, getMessages, unstable_setRequestLocale } from 'next-intl/server';
+
+// Components
+import HeadScript from '@/components/atoms/HeadScript';
 
 // Lib
 import { getLocales } from '@/lib/server/getLocales';
 
 // Types
 import type { Metadata } from 'next';
-
-// Styles
-// import { Inter } from 'next/font/google';
-import './globals.css';
-
-// const inter = Inter({ subsets: ['latin'] });
 
 export async function generateMetadata({params: { locale }}: Readonly<{
   params: { locale: string }
@@ -57,15 +53,15 @@ export default async function RootLayout({
   const messages = await getMessages({ locale });
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <>
       <head>
-        <ThemeModeScript mode="auto" />
+        <HeadScript locale={locale} />
       </head>
       <body className="bg-white dark:bg-gray-900">
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>
       </body>
-    </html>
+    </>
   );
 }

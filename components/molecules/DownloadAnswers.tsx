@@ -9,8 +9,8 @@ import Button, { VARIANTS } from '@/components/atoms/Button';
 import { downloadJson } from '@/helpers/downloadJson';
 
 // Lib
-import { getAllAnswers } from '@/lib/client/answerStorage';
-import { getIdentity } from '@/lib/client/identityStorage';
+import { getAllAnswers } from '@/store/answerStorage';
+import { getIdentity } from '@/store/identityStorage';
 
 function DownloadAnswers() {
   const t = useTranslations('Result');

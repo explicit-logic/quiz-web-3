@@ -2,12 +2,18 @@ const prefix = 're:';
 
 type Answers = { [key: string]: string | string[] };
 
+const isClient = typeof window !== 'undefined';
+
 export function setAnswersBySlug(slug: string, answers: Answers) {
+  if (!isClient) return;
+
   const key = `${prefix}${slug}`;
   sessionStorage.setItem(key, JSON.stringify(answers));
 }
 
 export function getAnswersBySlug(slug: string): Answers {
+  if (!isClient) return {};
+
   const key = `${prefix}${slug}`;
   const answers = sessionStorage.getItem(key);
 
@@ -23,6 +29,8 @@ export function getAnswersBySlug(slug: string): Answers {
 }
 
 export function getAllAnswers(): { [key: string]: Answers } {
+  if (!isClient) return {};
+
   const keys = Object.keys(sessionStorage);
   const answers = keys.reduce<{ [key: string]: Answers }>((acc, key) => {
     if (key.startsWith(prefix)) {
