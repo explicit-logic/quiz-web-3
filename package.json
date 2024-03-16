@@ -14,15 +14,15 @@
     "copyimages": "node ./bin/copy-images.mjs"
   },
   "dependencies": {
-    "flowbite": "^2.3.0",
-    "flowbite-react": "^0.7.2",
     "formik": "^2.4.5",
     "gray-matter": "^4.0.3",
     "marked": "^12.0.0",
+    "mini-svg-data-uri": "^1.4.4",
     "next": "14.1.0",
     "next-intl": "^3.9.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-icons": "^5.0.1",
     "tailwind-merge": "^2.2.1",
     "yup": "^1.3.3"
   },
@@ -36,7 +36,6 @@
     "autoprefixer": "^10.0.1",
     "eslint": "^8.56.0",
     "eslint-config-next": "14.1.0",
-    "flowbite-typography": "^1.0.3",
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"

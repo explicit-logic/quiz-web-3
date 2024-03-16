@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 
 import { HiMoon, HiSun } from 'react-icons/hi';
@@ -49,12 +51,12 @@ function DarkThemeToggle() {
       <HiMoon
         aria-label="Dark mode"
         className="w-4 h-4 text-gray-700 dark:hidden"
-        data-active={mode === 'dark'}
+        // data-active={mode === 'dark'}
       />
       <HiSun
         aria-label="Light mode"
         className="w-4 h-4 text-gray-300 hidden dark:block"
-        data-active={mode === 'light'}
+        // data-active={mode === 'light'}
       />
     </button>
   );

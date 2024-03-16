@@ -41,7 +41,7 @@ function QuestionFormView(props: ViewProps) {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <div className="mb-8 lg:mb-16">{component}</div>
+      <div className="flex flex-col space-y-4 mb-8 lg:mb-16">{component}</div>
 
       {/* Action Buttons */}
       <div className="flex flex-col mb-8 lg:mb-16 justify-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
