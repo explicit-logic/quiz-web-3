@@ -1,6 +1,6 @@
-const key = 'slugs';
+import { isClient } from '@/constants/isClient';
 
-const isClient = typeof window !== 'undefined';
+const key = 'slugs';
 
 export function getSlugs(): string[] {
   if (!isClient) {

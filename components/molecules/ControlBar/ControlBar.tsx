@@ -1,62 +1,64 @@
 'use client';
 // Modules
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 // Components
 import DarkThemeToggle from '@/components/atoms/DarkThemeToggle';
 
-// Helpers
-// import { PeerConnection } from '@/helpers/peer';
+// Store
+import { getReceiver, getReceiverId, setReceiverId } from '@/store/connectionStorage';
 
 // Hooks
+import { useConnection } from '@/hooks/useConnection';
 import { useSearchParams } from 'next/navigation';
 
 function ControlBar() {
-  const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
+  const { loading, established, setLoading, setEstablished } = useConnection();
 
   useEffect(() => {
-    const receiverId = searchParams.get('r');
-    console.log(receiverId);
+    const cachedReceiver = getReceiver();
+    const cachedReceiverId = getReceiverId();
+    const receiverId = cachedReceiverId ? cachedReceiverId : searchParams.get('r');
 
-    if (!receiverId) return;
+    if (cachedReceiver || !receiverId) return;
+    setReceiverId(receiverId);
 
-    const connect = async () => {
+    const establishConnection = async () => {
       setLoading(true);
 
-      const { PeerConnection } = await import('../../../helpers/peer');
+      const { connect } = await import('../../../helpers/connection');
 
-      // Sender
-      await PeerConnection.startPeerSession();
+      const receiver = await connect({ receiverId });
 
-      // Receiver
-      await PeerConnection.connectPeer(receiverId);
-
-      PeerConnection.onConnectionDisconnected(receiverId, () => {
+      receiver.on('close', () => {
         console.info('Connection closed: ' + receiverId);
-      });
-      PeerConnection.onConnectionReceiveData(receiverId, (data) => {
-        console.info('Receiving data ', data, ' from ' + receiverId);
+        setEstablished(false);
       });
 
-      await PeerConnection.sendConnection(receiverId, {
+      receiver.on('data', (data) => {
+        console.info('Receiving data ', data, ' from ', receiverId);
+      });
+
+      await receiver.send({
         type: 'message',
         message: 'Hello from student: ' + new Date().getTime(),
       });
 
       setTimeout(() => {
-        void PeerConnection.sendConnection(receiverId, {
+        void receiver.send({
           type: 'message',
           message: 'Hello from student again: ' + new Date().getTime(),
         });
       }, 3000);
 
       setLoading(false);
+      setEstablished(true);
     };
     if (typeof navigator !== 'undefined') {
-      void connect();
+      void establishConnection();
     }
-  }, [searchParams]);
+  }, [searchParams, setEstablished, setLoading]);
 
   return (
     <div className="inline-flex justify-between py-1 px-3 mb-7 divide-x divide-gray-400 text-sm text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800 dark:text-white">
@@ -66,7 +68,7 @@ function ControlBar() {
           <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-500"></span>
         </span>
         {
-          loading ? (<span>Loading...</span>) : (<span>Connected</span>)
+          loading ? (<span>Loading...</span>) : established && (<span>Connected</span>)
         }
         {/* <span>Ariana Tyler</span> */}
       </div>

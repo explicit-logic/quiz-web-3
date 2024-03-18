@@ -14,7 +14,7 @@ import LoadingIcon from '@/components/atoms/LoadingIcon';
 import RightArrow from '@/components/atoms/RightArrow';
 
 // Hooks
-import { useLoading } from '@/hooks/useLoading';
+import { useRouteLoading } from '@/hooks/useRouteLoading';
 
 const checkDisabled = ({ dirty, fields, isValid, loading }: { dirty: boolean, fields: ViewProps['fields'], isValid: boolean, loading: boolean }) => {
   if (loading) {
@@ -31,7 +31,7 @@ const checkDisabled = ({ dirty, fields, isValid, loading }: { dirty: boolean, fi
 function IdentityFormView(props: ViewProps) {
   const { fields, initialValues, validationSchema, onSubmit } = props;
   const t = useTranslations('Home');
-  const loading = useLoading();
+  const loading = useRouteLoading();
 
   return (
     <Formik

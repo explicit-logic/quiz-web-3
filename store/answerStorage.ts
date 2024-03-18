@@ -1,8 +1,8 @@
+import { isClient } from '@/constants/isClient';
+
 const prefix = 're:';
 
 type Answers = { [key: string]: string | string[] };
-
-const isClient = typeof window !== 'undefined';
 
 export function setAnswersBySlug(slug: string, answers: Answers) {
   if (!isClient) return;

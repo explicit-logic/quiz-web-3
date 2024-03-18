@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 // Hooks
 import Router from 'next/router';
 
-export function useLoading() {
+export function useRouteLoading() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

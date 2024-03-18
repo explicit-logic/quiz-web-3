@@ -1,5 +1,8 @@
 import Peer, { DataConnection } from 'peerjs';
 
+// Store
+import { getSenderId, setSenderId } from '@/store/connectionStorage';
+
 let peer: Peer | undefined;
 const connectionMap: Map<string, DataConnection> = new Map<string, DataConnection>();
 
@@ -8,24 +11,10 @@ export interface Data {
   message: string;
 }
 
-function setSenderId(senderId: string) {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem('sender-id', senderId);
-  }
-}
-
-function getSenderId(): string | null  {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem('sender-id');
-  }
-
-  return null;
-}
-
 export const PeerConnection = {
   getPeer: () => peer,
   startPeerSession: () => new Promise<string>((resolve, reject) => {
-    if (peer && peer.id) {
+    if (peer?.id) {
       return resolve(peer.id);
     }
     try {

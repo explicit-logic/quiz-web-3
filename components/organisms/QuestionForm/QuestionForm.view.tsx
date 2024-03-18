@@ -1,11 +1,11 @@
 'use client';
 
 // Modules
-import { memo } from 'react';
 import { useTranslations } from 'next-intl';
+import { memo } from 'react';
 
 // Hooks
-import { useLoading } from '@/hooks/useLoading';
+import { useRouteLoading } from '@/hooks/useRouteLoading';
 import { useQuestionRender } from './hooks/useQuestionRender';
 
 // Types
@@ -34,7 +34,7 @@ const getNextButtonContent = (t: (t: string) => string, { last, loading }: { las
 function QuestionFormView(props: ViewProps) {
   const { formik, goBack, last, questions, tokens } = props;
 
-  const loading = useLoading();
+  const loading = useRouteLoading();
   const t = useTranslations('Question');
 
   const component = useQuestionRender(formik, { questions, tokens });

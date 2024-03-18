@@ -1,6 +1,6 @@
-const key = 'identity';
+import { isClient } from '@/constants/isClient';
 
-const isClient = typeof window !== 'undefined';
+const key = 'identity';
 
 export function getIdentity() {
   if (!isClient) {

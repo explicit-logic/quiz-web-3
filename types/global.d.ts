@@ -1,4 +1,4 @@
-import type { Tokens as _Tokens, Token as _Token, TokensList as _TokensList } from 'marked';
+import type { Token as _Token, Tokens as _Tokens, TokensList as _TokensList } from 'marked';
 
 import { TYPES } from '@/constants/question';
 
@@ -27,4 +27,9 @@ declare global {
   }
 
   type QuestionsList = Question[];
+
+  type Message = {
+    type: string;
+    message: string;
+  };
 }

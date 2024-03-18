@@ -1,12 +1,16 @@
 // Modules
 import { NextIntlClientProvider } from 'next-intl';
-import { getTranslations, getMessages, unstable_setRequestLocale } from 'next-intl/server';
+import { getMessages, getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 
 // Components
 import HeadScript from '@/components/atoms/HeadScript';
+// import { Providers } from './providers';
 
 // Lib
 import { getLocales } from '@/lib/server/getLocales';
+
+// Providers
+import { ConnectionProvider } from '@/providers/ConnectionProvider';
 
 // Types
 import type { Metadata } from 'next';
@@ -59,7 +63,9 @@ export default async function RootLayout({
       </head>
       <body className="bg-white dark:bg-gray-900">
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <ConnectionProvider>
+            {children}
+          </ConnectionProvider>
         </NextIntlClientProvider>
       </body>
     </>
