@@ -1,6 +1,6 @@
 
 export declare type QuizConfig = {
   basePath: string;
-  fields: ('name' | 'group')[];
+  fields: ('email' | 'group' | 'name' )[];
   order: 'asc' | 'desc' | 'random';
 };

@@ -17,13 +17,17 @@
     "start": "Начать",
     "loading": "Загрузка...",
     "fields": {
-      "name": {
-        "label": "Ваше имя",
-        "placeholder": "Святослав Вакарчук"
+      "email": {
+        "label": "Ваш email",
+        "placeholder": "example@domain.com"
       },
       "group": {
         "label": "Ваша группа",
         "placeholder": ""
+      },
+      "name": {
+        "label": "Ваше имя",
+        "placeholder": "Святослав Вакарчук"
       }
     }
   },

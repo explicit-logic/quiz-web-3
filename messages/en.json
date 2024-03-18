@@ -17,13 +17,17 @@
     "start": "Let’s start",
     "loading": "Loading...",
     "fields": {
-      "name": {
-        "label": "Your name",
-        "placeholder": "Bonnie Green"
+      "email": {
+        "label": "Your email",
+        "placeholder": "example@domain.com"
       },
       "group": {
         "label": "Your group",
         "placeholder": ""
+      },
+      "name": {
+        "label": "Your name",
+        "placeholder": "Bonnie Green"
       }
     }
   },

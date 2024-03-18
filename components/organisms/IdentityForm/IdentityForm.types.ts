@@ -1,10 +1,11 @@
+import type { QuizConfig } from '@/data/quiz.types';
 import type { FormikConfig } from 'formik';
 import type { ObjectSchema } from 'yup';
-import type { QuizConfig } from '@/data/quiz.types';
 
 export type Values = {
-  name?: string;
+  email?: string;
   group?: string;
+  name?: string;
 };
 
 export type ContainerProps = {

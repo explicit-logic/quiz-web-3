@@ -9,7 +9,7 @@
       "type": "array",
       "items": {
         "type": "string",
-        "enum": ["name", "group"]
+        "enum": ["email", "group", "name"]
       }
     },
     "order": {

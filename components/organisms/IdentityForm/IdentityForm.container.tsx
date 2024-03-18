@@ -22,7 +22,6 @@ import { getValidationSchema } from './helpers/getValidationSchema';
 
 // Hooks
 import { useParams, useRouter } from 'next/navigation';
-// import { useSearchParams } from 'next/navigation';
 
 // Types
 import type { ContainerProps, Values } from './IdentityForm.types';
@@ -39,7 +38,6 @@ function IdentityFormContainer(props: ContainerProps) {
   const validationSchema = getValidationSchema(config.fields);
 
   const router = useRouter();
-  // const searchParams = useSearchParams();
 
   useEffect(() => {
     const finished = sessionStorage.getItem('finished');
@@ -54,7 +52,6 @@ function IdentityFormContainer(props: ContainerProps) {
 
     setIdentity(values);
 
-    // const room = searchParams.get('r');
     const orderedSlugs = orderHandler(slugs);
     setSlugs(orderedSlugs);
     const [slug] = orderedSlugs;
