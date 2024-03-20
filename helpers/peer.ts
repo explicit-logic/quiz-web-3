@@ -1,4 +1,4 @@
-import Peer, { DataConnection } from 'peerjs';
+import Peer, { type DataConnection } from 'peerjs';
 
 // Store
 import { getSenderId, setSenderId } from '@/store/connectionStorage';
@@ -21,7 +21,7 @@ export const PeerConnection = {
       const senderId = getSenderId();
       peer = senderId ? new Peer(senderId) : new Peer();
       peer.on('open', (id) => {
-        console.log('My ID: ' + id);
+        console.log(`My ID: ${id}`);
         setSenderId(id);
         resolve(id);
       }).on('error', (err) => {
@@ -59,11 +59,11 @@ export const PeerConnection = {
       if (!conn) {
         reject(new Error('Connection can\'t be established'));
       } else {
-        conn.on('open', function() {
-          console.log('Connect to: ' + id);
+        conn.on('open', () => {
+          console.log(`Connect to: ${id}`);
           connectionMap.set(id, conn);
           resolve();
-        }).on('error', function(err) {
+        }).on('error', (err) => {
           console.log(err);
           reject(err);
         });
@@ -73,8 +73,8 @@ export const PeerConnection = {
     }
   }),
   onIncomingConnection: (callback: (conn: DataConnection) => void) => {
-    peer?.on('connection', function (conn) {
-      console.log('Incoming connection: ' + conn.peer);
+    peer?.on('connection', (conn) => {
+      console.log(`Incoming connection: ${conn.peer}`);
       connectionMap.set(conn.peer, conn);
       callback(conn);
     });
@@ -88,8 +88,8 @@ export const PeerConnection = {
     }
     const conn = connectionMap.get(id);
     if (conn) {
-      conn.on('close', function () {
-        console.log('Connection closed: ' + id);
+      conn.on('close', () => {
+        console.log(`Connection closed: ${id}`);
         connectionMap.delete(id);
         callback();
       });
@@ -118,8 +118,8 @@ export const PeerConnection = {
     }
     const conn = connectionMap.get(id);
     if (conn) {
-      conn.on('data', function (receivedData) {
-        console.log('Receiving data from ' + id);
+      conn.on('data', (receivedData) => {
+        console.log(`Receiving data from ${id}`);
         console.log(receivedData);
         const data = receivedData as Data;
         callback(data);
