@@ -1,15 +1,18 @@
 import Peer, { type DataConnection } from 'peerjs';
 
+// Senders
+import { sendInit } from './senders/sendInit';
+
 // Store
-import { getReceiver, setReceiver, setSenderId } from '@/store/connectionStorage';
+import { getReceiver, setReceiver, getSenderId, setSenderId } from './store';
 
-type Params = { receiverId: string };
+type Params = { locale: string, receiverId: string };
 
-export async function connect({ receiverId }: Params) {
+export async function connect({ locale, receiverId }: Params) {
   const cachedReceiver = getReceiver();
   if (cachedReceiver) throw new Error('Connection existed');
 
-  // const cachedSenderId = getSenderId();
+  const cachedSenderId = getSenderId();
 
   // const sender = cachedSenderId ? new Peer(cachedSenderId) : new Peer();
   const sender = new Peer();
@@ -24,7 +27,11 @@ export async function connect({ receiverId }: Params) {
   }));
 
   console.log('Sender ID: ', senderId);
-  setSenderId(senderId);
+  if (!cachedSenderId) {
+    setSenderId(senderId);
+  }
+
+  await sendInit({ locale });
 
   const receiver: DataConnection = sender.connect(receiverId, {reliable: true});
   setReceiver(receiver);

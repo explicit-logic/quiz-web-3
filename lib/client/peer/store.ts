@@ -1,5 +1,5 @@
 import { isClient } from '@/constants/isClient';
-import { type DataConnection } from 'peerjs';
+import type { DataConnection } from 'peerjs';
 
 const receiverKey = 'receiver-id';
 const senderKey = 'sender-id';

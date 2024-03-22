@@ -1,14 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-
 import { HiMoon, HiSun } from 'react-icons/hi';
 
-const isClient = typeof window !== 'undefined';
+// Helpers
+import { identifyThemeMode } from '@/helpers/identifyThemeMode';
+
+// Store
+import { setThemeMode } from '@/store/themeModeStorage';
 
 type Mode = 'dark' | 'light';
-
-const setModeInLS = (mode: Mode) => localStorage.setItem('theme-mode', mode);
 
 const setModeInDOM = (mode: Mode) => {
   if (mode === 'dark') {
@@ -19,24 +20,13 @@ const setModeInDOM = (mode: Mode) => {
   }
 };
 
-const getInitialMode = (): Mode => {
-  if (!isClient) return 'dark';
-  const mode = (localStorage.getItem('theme-mode') ?? 'auto') as Mode | 'auto';
-
-  if (mode === 'auto') {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  }
-
-  return mode;
-};
-
 function DarkThemeToggle() {
-  const [mode, setMode] = useState<Mode>(getInitialMode());
+  const [mode, setMode] = useState<Mode>(identifyThemeMode());
 
   const toggleMode = () => {
     const newMode = mode === 'dark' ? 'light' : 'dark';
 
-    setModeInLS(newMode);
+    setThemeMode(newMode);
     setModeInDOM(newMode);
     setMode(newMode);
   };

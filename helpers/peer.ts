@@ -1,7 +1,7 @@
 import Peer, { type DataConnection } from 'peerjs';
 
 // Store
-import { getSenderId, setSenderId } from '@/store/connectionStorage';
+import { getSenderId, setSenderId } from '@/lib/client/peer/store';
 
 let peer: Peer | undefined;
 const connectionMap: Map<string, DataConnection> = new Map<string, DataConnection>();

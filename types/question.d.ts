@@ -1,6 +1,6 @@
 import type { Token as _Token, Tokens as _Tokens, TokensList as _TokensList } from 'marked';
 
-import { TYPES } from '@/constants/question';
+import type { TYPES as QUESTION_TYPES } from '@/constants/question';
 
 declare global {
   export import Tokens = _Tokens;
@@ -13,23 +13,18 @@ declare global {
   namespace Questions {
     interface MultipleChoice {
       id: string;
-      type: typeof TYPES.MC;
+      type: typeof QUESTION_TYPES.MC;
 
       items: Tokens.ListItem[];
     }
 
     interface MultipleResponse {
       id: string;
-      type: typeof TYPES.MR;
+      type: typeof QUESTION_TYPES.MR;
 
       items: Tokens.ListItem[];
     }
   }
 
   type QuestionsList = Question[];
-
-  type Message = {
-    type: string;
-    message: string;
-  };
 }

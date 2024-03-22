@@ -8,14 +8,21 @@ import DarkThemeToggle from '@/components/atoms/DarkThemeToggle';
 // Lib
 import { toast } from '@/lib/client/toaster';
 
+// Listeners
+import { listenInfo } from '@/lib/client/peer/listeners/listenInfo';
+
+// Senders
+import { sendInfo } from '@/lib/client/peer/senders/sendInfo';
+
 // Store
-import { getReceiver, getReceiverId, setReceiverId } from '@/store/connectionStorage';
+import { getReceiver, getReceiverId, setReceiverId } from '@/lib/client/peer/store';
 
 // Hooks
 import { useConnection } from '@/hooks/useConnection';
-import { useSearchParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 
 function ControlBar() {
+  const { locale } = useParams<{ locale: string }>();
   const searchParams = useSearchParams();
   const { loading, established, setLoading, setEstablished } = useConnection();
 
@@ -24,37 +31,33 @@ function ControlBar() {
     const cachedReceiverId = getReceiverId();
     const receiverId = searchParams.get('r') ?? cachedReceiverId;
 
-    if (cachedReceiver || !receiverId) return;
+    if (cachedReceiver || !receiverId || !locale) return;
     setReceiverId(receiverId);
 
     const establishConnection = async () => {
       setLoading(true);
 
-      const { connect } = await import('../../../helpers/connection');
+      const { connect } = await import('../../../lib/client/peer/connect');
 
       toast.info('Connection is established');
 
       try {
-        const receiver = await connect({ receiverId });
+        const receiver = await connect({ locale, receiverId });
 
         receiver.on('close', () => {
           toast.warning('Connection closed');
           setEstablished(false);
         });
 
-        receiver.on('data', (data) => {
-          console.info('Receiving data ', data, ' from ', receiverId);
-        });
+        listenInfo((data) => toast.message(data.text));
 
-        await receiver.send({
-          type: 'message',
-          message: `Hello from student: ${new Date().getTime()}`,
+        await sendInfo({
+          text: `Hello from student: ${new Date().getTime()}`,
         });
 
         setTimeout(() => {
-          void receiver.send({
-            type: 'message',
-            message: `Hello from student again: ${new Date().getTime()}`,
+          void sendInfo({
+            text: `Hello from student again: ${new Date().getTime()}`,
           });
         }, 3000);
 
@@ -66,7 +69,14 @@ function ControlBar() {
     if (typeof navigator !== 'undefined') {
       void establishConnection();
     }
-  }, [searchParams, setEstablished, setLoading]);
+
+    return () => {
+      const receiver = getReceiver();
+      if (receiver) {
+        receiver.close();
+      }
+    };
+  }, [locale, searchParams, setEstablished, setLoading]);
 
   return (
     <div className="inline-flex justify-between py-1 px-3 mb-7 divide-x divide-gray-400 text-sm text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800 dark:text-white">
