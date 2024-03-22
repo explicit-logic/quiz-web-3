@@ -1,7 +1,7 @@
 import Peer, { type DataConnection } from 'peerjs';
 
 // Store
-import { getReceiver, /* getSenderId, */ setReceiver, setSenderId } from '@/store/connectionStorage';
+import { getReceiver, setReceiver, setSenderId } from '@/store/connectionStorage';
 
 type Params = { receiverId: string };
 

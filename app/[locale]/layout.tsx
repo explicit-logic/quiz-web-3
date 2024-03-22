@@ -4,7 +4,7 @@ import { getMessages, getTranslations, unstable_setRequestLocale } from 'next-in
 
 // Components
 import HeadScript from '@/components/atoms/HeadScript';
-// import { Providers } from './providers';
+import Toaster from '@/components/organisms/Toaster';
 
 // Lib
 import { getLocales } from '@/lib/server/getLocales';
@@ -62,6 +62,7 @@ export default async function RootLayout({
         <HeadScript locale={locale} />
       </head>
       <body className="bg-white dark:bg-gray-900">
+        <Toaster />
         <NextIntlClientProvider messages={messages}>
           <ConnectionProvider>
             {children}
