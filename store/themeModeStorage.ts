@@ -1,6 +1,6 @@
 import { isClient } from '@/constants/isClient';
 
-const key = 'theme-mode';
+export const key = 'theme-mode';
 
 type Mode = 'dark' | 'light';
 

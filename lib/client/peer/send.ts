@@ -2,10 +2,10 @@
 import type { TYPES } from '@/constants/message';
 
 // Store
-import { getReceiver, getSenderId } from './store';
+import { getReceiver, getClientId } from './store';
 
 export async function send(type: keyof typeof TYPES, data: Message['data']) {
-  const senderId = getSenderId();
+  const clientId = getClientId();
   const receiver = getReceiver();
 
   if (!receiver) {
@@ -13,13 +13,13 @@ export async function send(type: keyof typeof TYPES, data: Message['data']) {
     return;
   }
 
-  if (!senderId) {
-    console.error('Sender id is not set');
+  if (!clientId) {
+    console.error('Client id is not set');
     return;
   }
 
   await receiver.send({
-    peerId: senderId,
+    clientId,
     type,
     data,
   });

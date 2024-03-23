@@ -1,8 +1,12 @@
+// Modules
+import { Suspense } from 'react';
+
 // Lib
 import { getFile, parse } from '@/lib/server/questionItem';
 import { getSlugs } from '@/lib/server/questionSlugs';
 
 // Components
+import ControlBar from '@/components/molecules/ControlBar';
 import QuestionForm from '@/components/organisms/QuestionForm';
 
 export async function generateStaticParams({ params: { locale } }: { params: { locale: string } }) {
@@ -38,12 +42,17 @@ export default async function Page({ params }: { params: { locale: string, slug:
   } = parse({ locale, markdown, slug });
 
   return (
-    <main className="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900 antialiased">
-      <div className="flex justify-between px-4 mx-auto max-w-screen-xl ">
-        <article className="mx-auto w-full max-w-2xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
-          <QuestionForm questions={questions} tokens={tokens} />
-        </article>
-      </div>
+    <main className="flex min-h-screen flex-col items-center justify-between">
+      <section>
+        <div className="py-4 px-4 mx-auto max-w-screen-xl lg:py-8 lg:px-12">
+          <div className="text-center">
+            <Suspense><ControlBar silent /></Suspense>
+          </div>
+          <article className="mx-auto w-full max-w-2xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
+            <QuestionForm questions={questions} tokens={tokens} />
+          </article>
+        </div>
+      </section>
     </main>
   );
 }

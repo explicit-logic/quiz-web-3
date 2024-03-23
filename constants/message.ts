@@ -1,8 +1,8 @@
 export const TYPES = Object.freeze({
   complete: 'complete',
-  info: 'info',
+  connect: 'connect',
+  identity: 'identity',
   init: 'init',
-  login: 'login',
-  open: 'open',
+  message: 'message',
   progress: 'progress',
 } as const);

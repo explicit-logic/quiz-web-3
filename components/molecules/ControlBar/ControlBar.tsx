@@ -5,65 +5,69 @@ import { useEffect } from 'react';
 // Components
 import DarkThemeToggle from '@/components/atoms/DarkThemeToggle';
 
+// Constants
+import { STATES } from '@/constants/connection';
+
 // Lib
 import { toast } from '@/lib/client/toaster';
 
 // Listeners
-import { listenInfo } from '@/lib/client/peer/listeners/listenInfo';
-
-// Senders
-import { sendInfo } from '@/lib/client/peer/senders/sendInfo';
+import { listenMessage } from '@/lib/client/peer/listeners/listenMessage';
 
 // Store
-import { getReceiver, getReceiverId, setReceiverId } from '@/lib/client/peer/store';
+import { getReceiver, getSender, getReceiverId, setReceiverId } from '@/lib/client/peer/store';
 
 // Hooks
 import { useConnection } from '@/hooks/useConnection';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams, usePathname, useSearchParams } from 'next/navigation';
+import Flasher from '@/components/atoms/Flasher';
 
-function ControlBar() {
+let lastPathname: string;
+function ControlBar({ silent = false }: Readonly<{ silent?: boolean }>) {
   const { locale } = useParams<{ locale: string }>();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { loading, established, setLoading, setEstablished } = useConnection();
+  const r = searchParams.get('r');
+  const { state, setState } = useConnection();
 
   useEffect(() => {
+    if (lastPathname && lastPathname === pathname) return;
+    lastPathname = pathname;
+
     const cachedReceiver = getReceiver();
     const cachedReceiverId = getReceiverId();
-    const receiverId = searchParams.get('r') ?? cachedReceiverId;
+    const receiverId = r ?? cachedReceiverId;
 
     if (cachedReceiver || !receiverId || !locale) return;
     setReceiverId(receiverId);
 
     const establishConnection = async () => {
-      setLoading(true);
+      setState(STATES.LOADING);
 
       const { connect } = await import('../../../lib/client/peer/connect');
 
-      toast.info('Connection is established');
-
       try {
-        const receiver = await connect({ locale, receiverId });
+        const onError = (error: Error) => {
+          setState(STATES.ERROR);
+          toast.error(error.message);
+        };
 
-        receiver.on('close', () => {
-          toast.warning('Connection closed');
-          setEstablished(false);
-        });
+        const onClose = () => {
+          setState(STATES.OFFLINE);
+        };
 
-        listenInfo((data) => toast.message(data.text));
+        await connect({ locale, pathname, receiverId }, { onClose, onError });
 
-        await sendInfo({
-          text: `Hello from student: ${new Date().getTime()}`,
-        });
+        if (!silent) {
+          toast.info('Connection is established');
+        }
 
-        setTimeout(() => {
-          void sendInfo({
-            text: `Hello from student again: ${new Date().getTime()}`,
-          });
-        }, 3000);
+        listenMessage((data) => toast.message(data.text));
 
-        setEstablished(true);
-      } finally {
-        setLoading(false);
+        setState(STATES.ONLINE);
+      } catch (error) {
+        setState(STATES.ERROR);
+        console.error(error);
       }
     };
     if (typeof navigator !== 'undefined') {
@@ -72,23 +76,21 @@ function ControlBar() {
 
     return () => {
       const receiver = getReceiver();
+      const sender = getSender();
       if (receiver) {
         receiver.close();
       }
+      if (sender) {
+        sender.disconnect();
+        sender.destroy();
+      }
     };
-  }, [locale, searchParams, setEstablished, setLoading]);
+  }, [locale, pathname, r, setState, silent]);
 
   return (
-    <div className="inline-flex justify-between py-1 px-3 mb-7 divide-x divide-gray-400 text-sm text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800 dark:text-white">
-      <div className="flex items-center pr-2">
-        <span className="flex relative h-2 w-2 mr-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75" />
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-500" />
-        </span>
-        {
-          loading ? (<span>Loading...</span>) : established && (<span>Connected</span>)
-        }
-        {/* <span>Ariana Tyler</span> */}
+    <div className={`transition ease-in-out duration-500 ${silent ? 'opacity-40 hover:opacity-100' : ''} inline-flex justify-between h-9 py-1 pl-3 pr-2 mb-7 divide-x divide-gray-400 text-sm text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800 dark:text-white`}>
+      <div className="pr-2">
+        <Flasher silent={silent} state={state} />
       </div>
       <div className="pl-2">
         <DarkThemeToggle />

@@ -1,57 +1,12 @@
 import type { TYPES as MESSAGE_TYPES } from '@/constants/message';
 
 declare global {
-  type Message = (Messages.Complete | Messages.Info | Messages.Init | Messages.Login | Messages.Open | Messages.Progress);
+  type Message = (Messages.Complete | Messages.Connect | Messages.Identity | Messages.Init | Messages.Message | Messages.Progress);
 
   namespace Messages {
-    interface Init {
-      peerId: string;
-      type: typeof MESSAGE_TYPES.init;
-
-      data: {
-        agent: string,
-        locale: string,
-        theme: 'auto' | 'dark' | 'light',
-      };
-    }
-
-    interface Login {
-      peerId: string;
-      type: typeof MESSAGE_TYPES.login;
-
-      data: {
-        identity: {
-          email: string;
-          group?: string;
-          name?: string;
-        },
-        slugs: string[];
-      };
-    }
-
-    interface Open {
-      peerId: string;
-      type: typeof MESSAGE_TYPES.open;
-
-      data: {
-        page: string;
-      };
-    }
-
-    interface Progress {
-      peerId: string;
-      type: typeof MESSAGE_TYPES.progress;
-
-      data: {
-        answer: object;
-        page: string;
-        progress: number;
-        total: number;
-      };
-    }
 
     interface Complete {
-      peerId: string;
+      clientId: string;
       type: typeof MESSAGE_TYPES.progress;
 
       data: {
@@ -59,12 +14,61 @@ declare global {
       };
     }
 
-    interface Info {
-      peerId: string;
-      type: typeof MESSAGE_TYPES.info;
+    interface Connect {
+      type: typeof MESSAGE_TYPES.connect;
+
+      data: {
+        agent: string,
+        clientId?: string,
+        locale: string,
+        pathname: string,
+        theme: 'auto' | 'dark' | 'light',
+        timeZone: string,
+      };
+    }
+
+    interface Identity {
+      clientId: string;
+      type: typeof MESSAGE_TYPES.identity;
+
+      data: {
+        email: string;
+        group?: string;
+        name?: string;
+        context: {
+          slugs: string[];
+        }
+      };
+    }
+
+    interface Init {
+      type: typeof MESSAGE_TYPES.init;
+
+      data: {
+        agent: string,
+        clientId: string,
+        locale: string,
+        theme: 'auto' | 'dark' | 'light',
+        timeZone: string,
+      };
+    }
+
+    interface Message {
+      clientId: string;
+      type: typeof MESSAGE_TYPES.message;
 
       data: {
         text: string;
+      };
+    }
+
+    interface Progress {
+      clientId: string;
+      type: typeof MESSAGE_TYPES.progress;
+
+      data: {
+        answer: object;
+        page: string;
       };
     }
   }

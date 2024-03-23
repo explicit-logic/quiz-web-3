@@ -14,13 +14,18 @@ import IdentityFormView from './IdentityForm.view';
 
 // Constants
 // import { FIELDS } from './constants';
+import { STATES } from '@/constants/connection';
 
 // Helpers
 import { getOrderHandler } from '@/helpers/getOrderHandler';
 import { getInitialValues } from './helpers/getInitialValues';
 import { getValidationSchema } from './helpers/getValidationSchema';
 
+// Senders
+import { sendIdentity } from '@/lib/client/peer/senders/sendIdentity';
+
 // Hooks
+import { useConnection } from '@/hooks/useConnection';
 import { useParams, useRouter } from 'next/navigation';
 
 // Types
@@ -31,6 +36,8 @@ const orderHandler = getOrderHandler(config.order);
 
 function IdentityFormContainer(props: ContainerProps) {
   const { slugs } = props;
+
+  const { state } = useConnection();
 
   const { locale } = useParams<{ locale: string }>();
 
@@ -47,7 +54,7 @@ function IdentityFormContainer(props: ContainerProps) {
     }
   }, [locale, router]);
 
-  function onSubmit(values: Values) {
+  async function onSubmit(values: Values) {
     if (!slugs.length) return;
 
     setIdentity(values);
@@ -55,6 +62,18 @@ function IdentityFormContainer(props: ContainerProps) {
     const orderedSlugs = orderHandler(slugs);
     setSlugs(orderedSlugs);
     const [slug] = orderedSlugs;
+
+    if (state === STATES.ONLINE) {
+      const email = values.email ?? '';
+      await sendIdentity({
+        email,
+        group: values.group,
+        name: values.name,
+        context: {
+          slugs: orderedSlugs,
+        }
+      });
+    }
 
     router.replace(`/${locale}/questions/${slug}`);
   }

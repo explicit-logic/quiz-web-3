@@ -1,17 +1,18 @@
 import { isClient } from '@/constants/isClient';
-import type { DataConnection } from 'peerjs';
+import type { DataConnection, Peer } from 'peerjs';
 
 const receiverKey = 'receiver-id';
-const senderKey = 'sender-id';
+const clientKey = 'client-id';
 
 let _receiver: DataConnection | undefined;
+let _sender: Peer | undefined;
 
-export function getSenderId(): string | null {
+export function getClientId(): string | null {
   if (!isClient) {
     return null;
   }
 
-  return sessionStorage.getItem(senderKey);
+  return sessionStorage.getItem(clientKey);
 }
 
 export function getReceiverId(): string | null {
@@ -22,15 +23,15 @@ export function getReceiverId(): string | null {
   return sessionStorage.getItem(receiverKey);
 }
 
-export function setReceiverId(receiverId: string) {
+export function setClientId(clientId: string) {
   if (isClient) {
-    sessionStorage.setItem(receiverKey, receiverId);
+    sessionStorage.setItem(clientKey, clientId);
   }
 }
 
-export function setSenderId(senderId: string) {
+export function setReceiverId(receiverId: string) {
   if (isClient) {
-    sessionStorage.setItem(senderKey, senderId);
+    sessionStorage.setItem(receiverKey, receiverId);
   }
 }
 
@@ -40,4 +41,12 @@ export function getReceiver() {
 
 export function setReceiver(receiver: DataConnection | undefined) {
   _receiver = receiver;
+}
+
+export function getSender() {
+  return _sender;
+}
+
+export function setSender(sender: Peer | undefined) {
+  _sender = sender;
 }

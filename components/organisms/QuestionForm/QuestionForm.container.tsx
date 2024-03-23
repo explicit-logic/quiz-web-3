@@ -1,5 +1,4 @@
 'use client';
-
 import { useFormik } from 'formik';
 
 // Lib
@@ -12,9 +11,11 @@ import QuestionFormView from './QuestionForm.view';
 // Helpers
 import { getValidationSchema } from './helpers/getValidationSchema';
 
+// Senders
+import { sendProgress } from '@/lib/client/peer/senders/sendProgress';
+
 // Hooks
 import { useRouter, useParams } from 'next/navigation';
-// import { useSearchParams } from 'next/navigation';
 
 // Types
 import type { ContainerProps, Values } from './QuestionForm.types';
@@ -45,10 +46,13 @@ function QuestionFormContainer(props: ContainerProps) {
     router.replace(`/${locale}/questions/${previousSlug}`);
   }
 
-  function onSubmit(values: Values) {
-    // const room = searchParams.get('r');
-
+  async function onSubmit(values: Values) {
     setAnswersBySlug(slug, values);
+
+    await sendProgress({
+      answer: values,
+      page: slug,
+    });
 
     if (last) {
       sessionStorage.setItem('finished', 'true');

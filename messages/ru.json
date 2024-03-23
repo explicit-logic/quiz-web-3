@@ -10,12 +10,14 @@
     },
     "description": "Пройдите тест чтобы проверить свои знания NEXT.js"
   },
+  "Common": {
+    "loading": "Загрузка..."
+  },
   "Home": {
     "title": "Nex.js Опрос",
     "headline": "Next.js Опрос",
     "caption": "Пройдите опрос чтобы проверить свои знания",
     "start": "Начать",
-    "loading": "Загрузка...",
     "fields": {
       "email": {
         "label": "Ваш email",
@@ -32,7 +34,6 @@
     }
   },
   "Question": {
-    "loading": "Загрузка...",
     "next": "Далее",
     "back": "Назад",
     "finish": "Закончить"

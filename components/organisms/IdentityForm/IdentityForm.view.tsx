@@ -9,29 +9,13 @@ import { useTranslations } from 'next-intl';
 import { FIELDS } from './constants';
 
 // Components
-import Button, { VARIANTS } from '@/components/atoms/Button';
-import LoadingIcon from '@/components/atoms/LoadingIcon';
-import RightArrow from '@/components/atoms/RightArrow';
+import SubmitButton from './components/SubmitButton';
 
-// Hooks
-import { useRouteLoading } from '@/hooks/useRouteLoading';
-
-const checkDisabled = ({ dirty, fields, isValid, loading }: { dirty: boolean, fields: ViewProps['fields'], isValid: boolean, loading: boolean }) => {
-  if (loading) {
-    return true;
-  }
-
-  if (!fields.length) {
-    return false;
-  }
-
-  return (!isValid || !dirty);
-};
 
 function IdentityFormView(props: ViewProps) {
   const { fields, initialValues, validationSchema, onSubmit } = props;
-  const t = useTranslations('Home');
-  const loading = useRouteLoading();
+  const tCommon = useTranslations('Common');
+  const tHome = useTranslations('Home');
 
   return (
     <Formik
@@ -39,13 +23,13 @@ function IdentityFormView(props: ViewProps) {
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
-      {({ dirty, isValid }) => (
+      {() => (
         <Form className="max-w-sm mx-auto">
           {
             fields.includes(FIELDS.name) && (
               <>
                 <label htmlFor={FIELDS.name} className="block mb-2 text-left text-sm font-medium text-gray-900 dark:text-gray-300">
-                  {t(`fields.${FIELDS.name}.label`)}
+                  {tHome(`fields.${FIELDS.name}.label`)}
                 </label>
                 <div className="flex mb-6">
                   <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
@@ -57,7 +41,7 @@ function IdentityFormView(props: ViewProps) {
                     id={FIELDS.name}
                     className="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500"
                     name={FIELDS.name}
-                    placeholder={t(`fields.${FIELDS.name}.placeholder`)}
+                    placeholder={tHome(`fields.${FIELDS.name}.placeholder`)}
                     type="text"
                   />
                 </div>
@@ -68,7 +52,7 @@ function IdentityFormView(props: ViewProps) {
             fields.includes(FIELDS.email) && (
               <>
                 <label htmlFor={FIELDS.email} className="block mb-2 text-left text-sm font-medium text-gray-900 dark:text-gray-300">
-                  {t(`fields.${FIELDS.email}.label`)}
+                  {tHome(`fields.${FIELDS.email}.label`)}
                 </label>
                 <div className="relative mb-6">
                   <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
@@ -81,7 +65,7 @@ function IdentityFormView(props: ViewProps) {
                     id={FIELDS.email}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     name={FIELDS.email}
-                    placeholder={t(`fields.${FIELDS.email}.placeholder`)}
+                    placeholder={tHome(`fields.${FIELDS.email}.placeholder`)}
                     type="email"
                   />
                 </div>
@@ -91,7 +75,7 @@ function IdentityFormView(props: ViewProps) {
           {
             fields.includes(FIELDS.group) && (
               <>
-                <label htmlFor={FIELDS.group} className="block mb-2 text-left text-sm font-medium text-gray-900 dark:text-gray-300">{t(`fields.${FIELDS.group}.label`)}</label>
+                <label htmlFor={FIELDS.group} className="block mb-2 text-left text-sm font-medium text-gray-900 dark:text-gray-300">{tHome(`fields.${FIELDS.group}.label`)}</label>
                 <div className="flex mb-6">
                   <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
                     <svg className="w-6 h-6 text-gray-800 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -102,7 +86,7 @@ function IdentityFormView(props: ViewProps) {
                     id={FIELDS.group}
                     className="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500"
                     name={FIELDS.group}
-                    placeholder={t(`fields.${FIELDS.group}.placeholder`)}
+                    placeholder={tHome(`fields.${FIELDS.group}.placeholder`)}
                     type="text"
                   />
                 </div>
@@ -110,16 +94,7 @@ function IdentityFormView(props: ViewProps) {
             )
           }
           <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-            <Button
-              type="submit"
-              disabled={checkDisabled({ dirty, fields, isValid, loading })}
-              variant={VARIANTS.default}
-            >{
-                loading
-                  ? (<><LoadingIcon />{t('loading')}</>)
-                  : (<>{t('start')}<RightArrow className="ml-2 -mr-1 w-5 h-5" /></>)
-              }
-            </Button>
+            <SubmitButton fields={fields} tCommon={tCommon} tHome={tHome} />
           </div>
         </Form>
       )}

@@ -1,10 +1,13 @@
 'use client';
 // Modules
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 
 // Lib
 import { getAllAnswers } from '@/store/answerStorage';
+
+// Senders
+import { sendComplete } from '@/lib/client/peer/senders/sendComplete';
 
 // Constants
 import { TYPES } from '@/constants/question';
@@ -27,7 +30,7 @@ function checkPassed(question: Question, answer: string | string[]): boolean {
     for (const item of question.items) {
       if (item.checked) {
         allCount += 1;
-        if (answer.includes(idx.toString())) {
+        if ((answer ?? []).includes(idx.toString())) {
           correctCount += 1;
         }
       }
@@ -40,9 +43,21 @@ function checkPassed(question: Question, answer: string | string[]): boolean {
   return false;
 }
 
+let didInit = false;
 
 function Score(props: { allQuestions: Record<string, QuestionsList> }) {
   const { allQuestions } = props;
+
+  useEffect(() => {
+    if (didInit) return;
+    const allAnswers = getAllAnswers();
+
+    didInit = true;
+    void sendComplete({
+      result: allAnswers,
+    });
+  }, []);
+
 
   const { passed, total } = useMemo(() => {
     const allAnswers = getAllAnswers();
@@ -51,7 +66,8 @@ function Score(props: { allQuestions: Record<string, QuestionsList> }) {
     let passedCount = 0;
     for (const [slug, questions] of Object.entries(allQuestions)) {
       for (const question of questions) {
-        const answer = allAnswers[slug][question.id];
+        const pageAnswers = allAnswers[slug] ?? {};
+        const answer = pageAnswers[question.id];
         const passed = checkPassed(question, answer);
         if (passed) {
           passedCount += 1;
@@ -74,7 +90,7 @@ function Score(props: { allQuestions: Record<string, QuestionsList> }) {
       <h2 className="mb-4 text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
         {t('score')}
       </h2>
-      <p className="mb-4 text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
+      <p className="mb-4 text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-3xl lg:text-4xl dark:text-white" suppressHydrationWarning>
         {passed}&nbsp;/&nbsp;{total}
       </p>
     </div>
