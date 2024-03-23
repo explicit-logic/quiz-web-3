@@ -16,11 +16,16 @@ import Button, { VARIANTS } from '@/components/atoms/Button';
 import LoadingIcon from '@/components/atoms/LoadingIcon';
 import RightArrow from '@/components/atoms/RightArrow';
 
-const getNextButtonContent = (t: (t: string) => string, { last, loading }: { last: boolean, loading: boolean }) => {
-  const buttonText = last ? t('finish') : t('next');
+type TranslationParams = {
+  tCommon: (t: string) => string,
+  tQuestion: (t: string) => string,
+};
+
+const getNextButtonContent = ({ tCommon, tQuestion }: TranslationParams, { last, loading }: { last: boolean, loading: boolean }) => {
+  const buttonText = last ? tQuestion('finish') : tQuestion('next');
 
   if (loading) {
-    return (<><LoadingIcon />{t('loading')}</>);
+    return (<><LoadingIcon />{tCommon('loading')}</>);
   }
 
   return (
@@ -35,7 +40,8 @@ function QuestionFormView(props: ViewProps) {
   const { formik, goBack, last, questions, tokens } = props;
 
   const loading = useRouteLoading();
-  const t = useTranslations('Question');
+  const tCommon = useTranslations('Common');
+  const tQuestion = useTranslations('Question');
 
   const component = useQuestionRender(formik, { questions, tokens });
 
@@ -50,14 +56,14 @@ function QuestionFormView(props: ViewProps) {
           variant={VARIANTS.alternative}
           onClick={goBack}
         >
-          {t('back')}
+          {tQuestion('back')}
         </Button>
         <Button
           type="submit"
           disabled={(loading || !formik.isValid || !formik.dirty)}
           variant={VARIANTS.default}
         >
-          {getNextButtonContent(t, { last, loading })}
+          {getNextButtonContent({ tCommon, tQuestion }, { last, loading })}
         </Button>
       </div>
     </form>

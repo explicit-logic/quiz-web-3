@@ -2,18 +2,19 @@
 
 import React, { createContext, useState } from 'react';
 
+// Constants
+import { STATES } from '@/constants/connection';
+
+type StateType = typeof STATES[keyof typeof STATES];
+
 type ConnectionContextType = {
-  established: boolean,
-  loading: boolean,
-  setEstablished: React.Dispatch<React.SetStateAction<boolean>>,
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  state: StateType,
+  setState: React.Dispatch<React.SetStateAction<StateType>>,
 };
 
 const initialValues: ConnectionContextType = Object.freeze({
-  established: false,
-  loading: false,
-  setEstablished: () => {},
-  setLoading: () => {},
+  state: STATES.OFFLINE,
+  setState: () => {},
 });
 
 export const ConnectionContext = createContext<ConnectionContextType>(initialValues);
@@ -21,15 +22,12 @@ export const ConnectionContext = createContext<ConnectionContextType>(initialVal
 export function ConnectionProvider({ children }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [established, setEstablished] = useState(initialValues.established);
-  const [loading, setLoading] = useState(initialValues.loading);
+  const [state, setState] = useState<StateType>(STATES.OFFLINE);
 
   return (
     <ConnectionContext.Provider value={{
-      established,
-      loading,
-      setEstablished,
-      setLoading,
+      state,
+      setState
     }}>
       {children}
     </ConnectionContext.Provider>

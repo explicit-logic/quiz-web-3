@@ -10,12 +10,14 @@
     },
     "description": "Take this Quiz to test your knowledge of NEXT.js"
   },
+  "Common": {
+    "loading": "Loading..."
+  },
   "Home": {
     "title": "Nex.js Quiz",
     "headline": "Next.js Quiz",
     "caption": "Take this quiz to test your knowledge",
     "start": "Let’s start",
-    "loading": "Loading...",
     "fields": {
       "email": {
         "label": "Your email",
@@ -32,7 +34,6 @@
     }
   },
   "Question": {
-    "loading": "Loading...",
     "next": "Next question",
     "back": "Go Back",
     "finish": "Finish"

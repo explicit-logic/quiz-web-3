@@ -1,9 +1,11 @@
 import React from 'react';
 
+import { key } from '@/store/themeModeStorage';
+
 function getScript({ locale }: { locale: string }) {
   return `
   try {
-    const mode = window.localStorage.getItem('theme-mode') ?? 'auto';
+    const mode = window.sessionStorage.getItem('${key}') ?? 'auto';
     const computedMode =
       mode === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : mode;
 

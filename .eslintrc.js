@@ -37,6 +37,7 @@ module.exports = {
     'next/core-web-vitals'
   ],
   rules: {
+    '@typescript-eslint/no-explicit-any': 'warn',
     'comma-spacing': ['error', { before: false, after: true }],
     indent: ['error', 2],
     'no-trailing-spaces': 'error',

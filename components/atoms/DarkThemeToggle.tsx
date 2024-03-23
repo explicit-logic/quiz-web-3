@@ -35,17 +35,17 @@ function DarkThemeToggle() {
     <button
       aria-label="Toggle dark mode"
       type="button"
-      className="flex justify-center items-center select-none rounded-full h-5 w-5 focus:outline-none focus:shadow-outline hover:bg-gray-200 dark:hover:bg-gray-700"
+      className="flex justify-center items-center select-none rounded-full h-7 w-7 focus:outline-none focus:shadow-outline hover:bg-gray-200 dark:hover:bg-gray-700"
       onClick={toggleMode}
     >
       <HiMoon
         aria-label="Dark mode"
-        className="w-4 h-4 text-gray-700 dark:hidden"
+        className="w-5 h-5 text-gray-700 dark:hidden"
         // data-active={mode === 'dark'}
       />
       <HiSun
         aria-label="Light mode"
-        className="w-4 h-4 text-gray-300 hidden dark:block"
+        className="w-5 h-5 text-gray-300 hidden dark:block"
         // data-active={mode === 'light'}
       />
     </button>
