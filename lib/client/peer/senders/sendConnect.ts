@@ -2,6 +2,7 @@
 import { TYPES } from '@/constants/message';
 
 // Helpers
+import { detectPlatform } from '@/helpers/detectPlatform';
 import { identifyThemeMode } from '@/helpers/identifyThemeMode';
 
 // Store
@@ -18,8 +19,9 @@ export async function sendConnect({ clientId, locale, pathname }: { clientId?: s
   await receiver.send({
     type: TYPES.connect,
     data: {
-      agent: navigator.userAgent,
+      userAgent: navigator.userAgent,
       clientId,
+      platform: detectPlatform(),
       locale,
       pathname,
       theme: identifyThemeMode(),
