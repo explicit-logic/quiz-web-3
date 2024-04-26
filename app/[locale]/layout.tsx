@@ -1,4 +1,5 @@
 // Modules
+import { Suspense } from 'react';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 
@@ -14,6 +15,7 @@ import { ConnectionProvider } from '@/providers/ConnectionProvider';
 
 // Types
 import type { Metadata } from 'next';
+import Connection from '@/components/atoms/Connection';
 
 export async function generateMetadata({params: { locale }}: Readonly<{
   params: { locale: string }
@@ -63,6 +65,7 @@ export default async function RootLayout({
       </head>
       <body className="bg-white dark:bg-gray-900">
         <Toaster />
+        <Suspense><Connection /></Suspense>
         <NextIntlClientProvider messages={messages}>
           <ConnectionProvider>
             {children}

@@ -14,7 +14,7 @@ declare global {
 
     interface Complete {
       clientId: string;
-      type: typeof MESSAGE_TYPES.progress;
+      type: typeof MESSAGE_TYPES.complete;
 
       data: {
         result: object;

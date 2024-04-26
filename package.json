@@ -14,6 +14,7 @@
     "copyimages": "node ./bin/copy-images.mjs"
   },
   "dependencies": {
+    "eventemitter3": "^5.0.1",
     "formik": "^2.4.5",
     "gray-matter": "^4.0.3",
     "marked": "^12.0.0",

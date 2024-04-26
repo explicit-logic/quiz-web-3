@@ -1,7 +1,11 @@
 import Peer, { type DataConnection, } from 'peerjs';
 
 // Constants
+import { EVENTS } from '@/constants/connection';
 import { TYPES } from '@/constants/message';
+
+// Lib
+import { eventEmitter } from '@/lib/client/eventEmitter';
 
 // Senders
 import { sendConnect } from './senders/sendConnect';
@@ -24,12 +28,21 @@ type Params = { locale: string, pathname: string, receiverId: string };
 type Callbacks = {
   onClose?: () => void,
   onError?: (error: Error) => void,
+  onOpen?: () => void,
+  onMessage?: (message: Message) => void,
 };
 
 export async function connect({ locale, pathname, receiverId }: Params, callbacks?: Callbacks) {
-  const { onClose = () => {}, onError = () => {} } = callbacks ?? {};
+  const {
+    onClose = () => {},
+    onError = () => {},
+    onOpen = () => {},
+    onMessage = () => {},
+  } = callbacks ?? {};
   const cachedReceiver = getReceiver();
   if (cachedReceiver) throw new Error('Connection existed');
+
+  eventEmitter.emit(EVENTS.LOADING);
 
   const cachedClientId = getClientId();
 
@@ -39,10 +52,12 @@ export async function connect({ locale, pathname, receiverId }: Params, callback
   const close = () => {
     reset();
     onClose();
+    eventEmitter.emit(EVENTS.CLOSE);
   };
   const errorHandler = (error: Error) => {
     reset();
     onError(error);
+    eventEmitter.emit(EVENTS.ERROR, error);
   };
   sender
     .on('close', close)
@@ -68,12 +83,18 @@ export async function connect({ locale, pathname, receiverId }: Params, callback
         const { clientId } = message.data;
         setClientId(clientId);
         connected = true;
+      } else {
+        onMessage(message);
+        eventEmitter.emit(EVENTS.MESSAGE, message);
       }
     });
 
   await sendConnect({ clientId: cachedClientId ?? undefined, locale, pathname });
 
   await waitForConnect();
+
+  onOpen();
+  eventEmitter.emit(EVENTS.OPEN);
 
   return { receiver, sender };
 }
